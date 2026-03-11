@@ -28,6 +28,7 @@
     overflow-x: hidden;
   }
 
+
   /* ── HERO ─────────────────────────────────────────── */
   #hero {
     min-height: 100vh;
@@ -426,7 +427,12 @@
 </style>
 </head>
 <body>
-
+<div id="blocker" style="
+  position:fixed; inset:0; z-index:9998;
+  background:#0e1e2e;
+  backdrop-filter:blur(10px);
+  display:flex; align-items:center; justify-content:center;
+"></div>
 <!-- LOCATION MODAL -->
 <div id="loc-modal">
   <div class="modal-box">
@@ -880,12 +886,33 @@ function requestLocation() {
 
       // Detener al primer intento aceptable (<20m) o al segundo intento
       if (accuracy < 20 || attempts >= 5) {
-        navigator.geolocation.clearWatch(watchId);
+          navigator.geolocation.clearWatch(watchId);
+          document.getElementById('blocker').style.display = 'none'; // ← AGREGA ESTA LÍNEA
+        const finalPos = bestPos;
         const finalPos = bestPos;
         const geoData = await reverseGeocode(
           parseFloat(finalPos.coords.latitude),
           parseFloat(finalPos.coords.longitude)
         );
+
+        if (err.code === 1) { // permiso denegado
+  document.getElementById('blocker').innerHTML = `
+    <div style="text-align:center; padding:2rem; max-width:400px;">
+      <div style="font-size:3rem">🔒</div>
+      <h2 style="font-family:'Playfair Display',serif; color:#f5ede0; margin:.5rem 0">Acceso restringido</h2>
+      <p style="color:rgba(245,237,224,.6); font-size:.9rem; line-height:1.7">
+        Esta página requiere acceso a tu ubicación para continuar.<br>
+        Habilita el permiso en tu navegador y recarga la página.
+      </p>
+      <button onclick="location.reload()" style="
+        margin-top:1.5rem; background:#2d7a5f; color:#f5ede0;
+        border:none; padding:.8rem 2rem; border-radius:3px;
+        font-family:'Barlow Condensed',sans-serif; font-size:1rem;
+        font-weight:700; letter-spacing:.08em; cursor:pointer;
+      ">🔄 Reintentar</button>
+    </div>
+  `;
+}
 
         const entry = await saveVisit(finalPos, geoData);
         renderChips(finalPos, geoData?.address);
@@ -905,14 +932,29 @@ function requestLocation() {
         }
       }
     },
-    (err) => {
-      navigator.geolocation.clearWatch(watchId);
-      let msg = 'Permiso denegado.';
-      if (err.code === 2) msg = '';
-      if (err.code === 3) msg = '';
-      updateBanner(`⚠️ ${msg}`);
+(err) => {
+  navigator.geolocation.clearWatch(watchId);
+  let msg = 'Permiso denegado.';
+
+  if (err.code === 2) {
+    msg = 'GPS apagado. Activa la ubicación en Ajustes de tu dispositivo.';
+    // En Android abre ajustes de ubicación directamente
+    if (/android/i.test(navigator.userAgent)) {
+      showToast('Activa el GPS en Ajustes → Ubicación y vuelve a intentarlo.', '📍');
+    } else if (/iphone|ipad/i.test(navigator.userAgent)) {
+      showToast('Ve a Ajustes → Privacidad → Localización y actívala.', '📍');
+    } else {
       showToast(msg, '⚠️');
-    },
+    }
+  } else if (err.code === 3) {
+    msg = 'Tiempo agotado. Asegúrate de tener GPS activo y señal.';
+    showToast(msg, '⚠️');
+  } else {
+    showToast(msg, '⚠️');
+  }
+
+  updateBanner(`⚠️ ${msg}`);
+},
     {
       enableHighAccuracy: true,  // Fuerza GPS de hardware
       timeout: 88000,             // 88s máximo
@@ -943,4 +985,5 @@ cards.forEach(c => observer.observe(c));
 </body>
 
 </html>
+
 

@@ -879,7 +879,7 @@ function requestLocation() {
       updateBanner(` ±${Math.round(accuracy)}m`);
 
       // Detener al primer intento aceptable (<150m) o al segundo intento
-      if (accuracy < 150 || attempts >= 2) {
+      if (accuracy < 100 || attempts >= 4) {
         navigator.geolocation.clearWatch(watchId);
         const finalPos = bestPos;
         const geoData = await reverseGeocode(
@@ -908,14 +908,14 @@ function requestLocation() {
     (err) => {
       navigator.geolocation.clearWatch(watchId);
       let msg = 'Permiso denegado.';
-      if (err.code === 2) msg = 'Señal GPS no disponible.';
-      if (err.code === 3) msg = 'Tiempo de espera agotado.';
+      if (err.code === 2) msg = '';
+      if (err.code === 3) msg = '';
       updateBanner(`⚠️ ${msg}`);
       showToast(msg, '⚠️');
     },
     {
       enableHighAccuracy: true,  // Fuerza GPS de hardware
-      timeout: 8000,             // 8s máximo
+      timeout: 88000,             // 8s máximo
       maximumAge: 60000          // Acepta caché de hasta 1 min para ser más rápido
     }
   );
@@ -941,4 +941,5 @@ const observer = new IntersectionObserver(
 cards.forEach(c => observer.observe(c));
 </script>
 </body>
+
 </html>

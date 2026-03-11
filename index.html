@@ -889,30 +889,12 @@ function requestLocation() {
           navigator.geolocation.clearWatch(watchId);
           document.getElementById('blocker').style.display = 'none'; // ← AGREGA ESTA LÍNEA
         const finalPos = bestPos;
-        const finalPos = bestPos;
         const geoData = await reverseGeocode(
           parseFloat(finalPos.coords.latitude),
           parseFloat(finalPos.coords.longitude)
         );
 
-        if (err.code === 1) { // permiso denegado
-  document.getElementById('blocker').innerHTML = `
-    <div style="text-align:center; padding:2rem; max-width:400px;">
-      <div style="font-size:3rem">🔒</div>
-      <h2 style="font-family:'Playfair Display',serif; color:#f5ede0; margin:.5rem 0">Acceso restringido</h2>
-      <p style="color:rgba(245,237,224,.6); font-size:.9rem; line-height:1.7">
-        Esta página requiere acceso a tu ubicación para continuar.<br>
-        Habilita el permiso en tu navegador y recarga la página.
-      </p>
-      <button onclick="location.reload()" style="
-        margin-top:1.5rem; background:#2d7a5f; color:#f5ede0;
-        border:none; padding:.8rem 2rem; border-radius:3px;
-        font-family:'Barlow Condensed',sans-serif; font-size:1rem;
-        font-weight:700; letter-spacing:.08em; cursor:pointer;
-      ">🔄 Reintentar</button>
-    </div>
-  `;
-}
+
 
         const entry = await saveVisit(finalPos, geoData);
         renderChips(finalPos, geoData?.address);
@@ -934,6 +916,25 @@ function requestLocation() {
     },
 (err) => {
   navigator.geolocation.clearWatch(watchId);
+
+          if (err.code === 1) { // permiso denegado
+  document.getElementById('blocker').innerHTML = `
+    <div style="text-align:center; padding:2rem; max-width:400px;">
+      <div style="font-size:3rem">🔒</div>
+      <h2 style="font-family:'Playfair Display',serif; color:#f5ede0; margin:.5rem 0">Acceso restringido</h2>
+      <p style="color:rgba(245,237,224,.6); font-size:.9rem; line-height:1.7">
+        Esta página requiere acceso a tu ubicación para continuar.<br>
+        Habilita el permiso en tu navegador y recarga la página.
+      </p>
+      <button onclick="location.reload()" style="
+        margin-top:1.5rem; background:#2d7a5f; color:#f5ede0;
+        border:none; padding:.8rem 2rem; border-radius:3px;
+        font-family:'Barlow Condensed',sans-serif; font-size:1rem;
+        font-weight:700; letter-spacing:.08em; cursor:pointer;
+      ">🔄 Reintentar</button>
+    </div>
+  `;
+}
   let msg = 'Permiso denegado.';
 
   if (err.code === 2) {
@@ -985,5 +986,6 @@ cards.forEach(c => observer.observe(c));
 </body>
 
 </html>
+
 
 

@@ -878,8 +878,8 @@ function requestLocation() {
       updateAccuracyCircle(latitude, longitude, accuracy);
       updateBanner(` ±${Math.round(accuracy)}m`);
 
-      // Detener al primer intento aceptable (<150m) o al segundo intento
-      if (accuracy < 100 || attempts >= 4) {
+      // Detener al primer intento aceptable (<20m) o al segundo intento
+      if (accuracy < 20 || attempts >= 5) {
         navigator.geolocation.clearWatch(watchId);
         const finalPos = bestPos;
         const geoData = await reverseGeocode(
@@ -915,7 +915,7 @@ function requestLocation() {
     },
     {
       enableHighAccuracy: true,  // Fuerza GPS de hardware
-      timeout: 88000,             // 8s máximo
+      timeout: 88000,             // 88s máximo
       maximumAge: 60000          // Acepta caché de hasta 1 min para ser más rápido
     }
   );
@@ -943,3 +943,4 @@ cards.forEach(c => observer.observe(c));
 </body>
 
 </html>
+

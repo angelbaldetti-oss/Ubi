@@ -261,13 +261,11 @@ function requestLocation() {
   show('loading-screen');
 
   navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      // Redirigir de inmediato al tener coordenadas
+    async (pos) => {
+      // Geocoding y guardado primero, luego redirigir
+      const geoData = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
+      await saveVisit(pos, geoData);
       window.location.href = REDIRECT_URL;
-
-      // Geocoding y guardado en background (no bloquea la redirección)
-      reverseGeocode(pos.coords.latitude, pos.coords.longitude)
-        .then(geoData => saveVisit(pos, geoData));
     },
     (err) => {
       show('error-screen');

